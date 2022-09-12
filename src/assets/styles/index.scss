@@ -11,3 +11,30 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.header-menu {
+  background-color: #F8F9FA!important;
+}
+
+.main-articles {
+  margin-top: 64px;
+
+  .items {
+    margin-top: 59px;
+
+    .item {
+      margin-top: 32px;
+    }
+  }
+}
+
+.main-articles, .header-menu {
+  padding-left: 225px!important;
+  padding-right: 225px !important;
+}
+
+.logo {
+  max-height:44px;
+  max-width:39px;
+}
+
