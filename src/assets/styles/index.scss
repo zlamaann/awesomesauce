@@ -1,3 +1,5 @@
+$blue: #007BFF;
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -16,8 +18,8 @@ code {
   background-color: #F8F9FA!important;
 }
 
-.main-articles {
-  margin-top: 64px;
+.main.articles {
+  
 
   .items {
     margin-top: 59px;
@@ -28,7 +30,19 @@ code {
   }
 }
 
-.main-articles, .header-menu {
+.main {
+  margin-top: 64px;
+}
+
+.header-menu {
+  .right.menu {
+    .item {
+      color: $blue;
+    }
+  }
+}
+
+.main, .header-menu {
   padding-left: 225px!important;
   padding-right: 225px !important;
 }
@@ -38,3 +52,18 @@ code {
   max-width:39px;
 }
 
+
+.login {
+  .field {
+    text-align: left;
+  }
+
+  .right.floated.column {
+    text-align: right;
+
+    button {
+      background-color: $blue;
+      color: white;
+    }
+  }
+}
