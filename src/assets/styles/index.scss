@@ -16,28 +16,43 @@ code {
 
 .header-menu {
   background-color: #F8F9FA!important;
-}
 
-.main.articles {
-  
-
-  .items {
-    margin-top: 59px;
-
+  .right.menu {
     .item {
-      margin-top: 32px;
+      color: $blue;
     }
   }
 }
 
+
 .main {
   margin-top: 64px;
-}
 
-.header-menu {
-  .right.menu {
-    .item {
-      color: $blue;
+  &.article-create {
+    h1 {
+      margin-right: 32px;
+    }
+  }
+
+  &.articles {
+    .items {
+      margin-top: 59px;
+  
+      .item {
+        margin-top: 32px;
+      }
+    }
+  }
+
+  &.login {
+    .field {
+      text-align: left;
+    }
+  
+    .right.floated.column {
+      text-align: right;
+  
+      
     }
   }
 }
@@ -52,18 +67,7 @@ code {
   max-width:39px;
 }
 
-
-.login {
-  .field {
-    text-align: left;
-  }
-
-  .right.floated.column {
-    text-align: right;
-
-    button {
-      background-color: $blue;
-      color: white;
-    }
-  }
+button.blue {
+  background-color: $blue;
+  color: white;
 }

@@ -1,19 +1,15 @@
-import React, { Component, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.png';
 import { Icon, Image, Item, Menu } from 'semantic-ui-react';
 
-export default class Header extends Component {
+const Header: FC = () => {
 
-  state = { activeItem: 'recent'};
+    const [activeItem, setActiveItem] = useState('recent');
 
-  handleItemClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => { 
-    this.setState({ activeItem: e.currentTarget.id }) 
-  }
-
-  render() {
-
-    const { activeItem } = this.state;
+    const handleItemClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => { 
+      setActiveItem(e.currentTarget.id ) 
+    }
 
     return (
       <div className='header-menu'>
@@ -23,7 +19,7 @@ export default class Header extends Component {
           <Menu.Item
               id='recent'
               active={activeItem === 'recent'}
-              onClick={this.handleItemClick}
+              onClick={handleItemClick}
               as={Link}
               to='/'
             >
@@ -33,7 +29,7 @@ export default class Header extends Component {
             <Menu.Item
               id='about'
               active={activeItem === 'about'}
-              onClick={this.handleItemClick}
+              onClick={handleItemClick}
               as={Link}
               to='/about'
             >
@@ -44,7 +40,7 @@ export default class Header extends Component {
               <Item 
                 id='login'
                 active={activeItem === 'login'}
-                onClick={this.handleItemClick}
+                onClick={handleItemClick}
                 as={Link}
                 to='/login' >Log In</Item>
               <Icon name='arrow right' spaced/>
@@ -55,4 +51,5 @@ export default class Header extends Component {
       </div>
     );  
   }
-}
+
+export default Header
