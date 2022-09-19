@@ -1,0 +1,73 @@
+$blue: #007BFF;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.header-menu {
+  background-color: #F8F9FA!important;
+
+  .right.menu {
+    .item {
+      color: $blue;
+    }
+  }
+}
+
+
+.main {
+  margin-top: 64px;
+
+  &.article-create {
+    h1 {
+      margin-right: 32px;
+    }
+  }
+
+  &.articles {
+    .items {
+      margin-top: 59px;
+  
+      .item {
+        margin-top: 32px;
+      }
+    }
+  }
+
+  &.login, &.register {
+    .field {
+      text-align: left;
+    }
+  
+    .right.floated.column {
+      text-align: right;
+  
+      
+    }
+  }
+}
+
+.main, .header-menu {
+  padding-left: 225px!important;
+  padding-right: 225px !important;
+}
+
+.logo {
+  max-height:44px;
+  max-width:39px;
+}
+
+button.blue {
+  background-color: $blue;
+  color: white;
+}
