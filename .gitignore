@@ -21,3 +21,14 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+=======
+# Local
+docker.env
+.env
+/**/node_modules/
+/**/build/
+/**/dist/
+.vscode
+.docker-data/
