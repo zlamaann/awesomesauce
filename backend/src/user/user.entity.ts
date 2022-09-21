@@ -6,7 +6,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, On
 @Entity()
 class User {
     @PrimaryGeneratedColumn()
-    public id: number;
+    public id?: number;
     
     @Column({ unique: true })
     public email: string;
