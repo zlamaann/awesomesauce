@@ -1,73 +1,40 @@
 version: '3.7'
 services:
-  nxginx:
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    env_file:
+      - ./backend/src/.env.dev
+    ports:
+        - "5500:5500"
+        - 9229:9229
+    volumes:
+      - ./backend/:/backend
+      - /backend/node_modules
+    command: npm run start:debug
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    env_file:
+      - ./frontend/src/.env.dev
+    ports:
+        - "3000:3000"
+    volumes:
+      - ./frontend/:/frontend
+      - /frontend/node_modules
     depends_on:
       - backend
-      - frontend
-    restart: always
-    build:
-      dockerfile: Dockerfile.dev
-      context: "./nginx"
-    ports:
-      - "3050:80"
-  backend:
-        image: node:latest
-        build:
-          context: ./backend
-          dockerfile: Dockerfile.dev
-        volumes:
-            - ./backend:/backend
-        ports:
-            - "3001:3000"
-        depends_on:
-            - postgres
-        links:
-            - postgres
-  frontend:
-        image: node:latest
-        build:
-          context: ./frontend
-          dockerfile: Dockerfile.dev
-        volumes:
-            - ./frontend:/frontend
-        depends_on:
-            - backend
-        ports:
-            - "3000:3000"
-        environment:
-            - CHOKIDAR_USEPOLLING=true
-        stdin_open: true
-        networks:
-            - bp-network
+    environment:
+       - CHOKIDAR_USEPOLLING=true
   postgres:
     container_name: postgres
     image: postgres:latest
     ports:
     - "5432:5432"
-    volumes:
-    - /data/postgres:/data/postgres
     env_file:
     - docker.env
-    restart: always
-    networks:
-      - bp-network
- 
-  pgadmin:
-    links:
-    - postgres:postgres
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    ports:
-    - "8080:80"
-    volumes:
-    - /data/pgadmin:/root/.pgadmin
-    env_file:
-    - docker.env
-    depends_on:
-      - postgres
-    networks:
-    - bp-network
- 
-networks:
-  bp-network:
-    driver: bridge
+  
