@@ -30,7 +30,7 @@ const ArticleDetail: FC = () => {
               </Item.Description>
               <Item.Extra>
                   <Item as='a'>Read whole article</Item>
-                  <span>{` ${article.commentsCount} comments` }</span>
+                  <span>{` ${article.comments?.length} comments` }</span>
               </Item.Extra>
             </Item.Content>
           </Item>

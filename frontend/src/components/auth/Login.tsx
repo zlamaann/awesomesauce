@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Divider, Form, Grid, Header, Segment } from "semantic-ui-react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
@@ -11,24 +11,31 @@ const Login: FC = () => {
         password: ''
       });
 
-    const { error, loading } = useAppSelector(state => state.auth)
+    const { error, loading, user } = useAppSelector(state => state.auth)
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const onChangeCredentials = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeCredentials = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 
         const { id, value } = e.target;
 
-        setCredentials(state => ({
-            ...state,
+        setCredentials(creds => ({
+            ...creds,
             [id]: value
         }))
     }
 
+    useEffect(() => {
+        if (user) {
+            navigate(`/articles/user/${user.id}`)
+        }
+    }, [])
+
+
     const handleSubmitLogin  = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(login(credentials)).then(() => navigate(`/`));
+        dispatch(login(credentials));
      }
 
     return (
@@ -40,11 +47,11 @@ const Login: FC = () => {
                             <Header as='h1' textAlign="left">Log In</Header>
                             <Form.Field required>
                                 <label>E-mail</label>
-                                <input placeholder='E-mail' value={credentials.email} onChange={onChangeCredentials} />
+                                <input placeholder='E-mail' id="email" defaultValue={credentials.email} onChange={onChangeCredentials} />
                             </Form.Field>
                             <Form.Field required>
                                 <label>Password</label>
-                                <input placeholder='Password' type="password" value={credentials.password} onChange={onChangeCredentials} />
+                                <input placeholder='Password' id="password" type="password" defaultValue={credentials.password} onChange={onChangeCredentials} />
                             </Form.Field>
                             <Grid.Column>
                                 <Button type='submit' className="blue">Log In</Button>

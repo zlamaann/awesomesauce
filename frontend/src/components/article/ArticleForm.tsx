@@ -22,12 +22,9 @@ const ArticleForm: FC = () => {
         id: 0,
         user: {
             id: 0,
-            email: "",
             name: "",
-            surname: "",
-            created: new Date()
+            surname: ""
         },
-        commentsCount: 0,
         created: new Date(),
         changed: new Date()
     }

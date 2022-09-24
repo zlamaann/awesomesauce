@@ -10,7 +10,7 @@ import ArticlesListRow from "./ArticlesListRow";
 
   useEffect(() => {
     dispatch(retrieveAllArticles());
-  })
+  }, [])
 
   const articles = useAppSelector((state) => state.articles.data);
 
@@ -19,7 +19,7 @@ import ArticlesListRow from "./ArticlesListRow";
         <Header as='h1' className="">Recent Articles</Header>
         <Item.Group>
           {Object.values(articles).map(article => (
-            <ArticlesListRow article={article} />
+            <ArticlesListRow key={article.id} article={article} />
           ))}
         </Item.Group>
       </div>

@@ -1,14 +1,20 @@
 
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../hooks/hooks';
-import { logout } from '../../redux';
 import { Icon, Item, Menu } from 'semantic-ui-react';
+import { AppDispatch, logout } from '../../redux';
 
 const AuthMenu: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const auth = useAppSelector(state => state.auth);
+
+  const [activeItem, setActiveItem] = useState('');
+
+  const handleItemClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => { 
+    setActiveItem(e.currentTarget.id ) 
+  }
 
   const handleLogout = () => {
     dispatch(logout());
@@ -17,9 +23,23 @@ const AuthMenu: FC = () => {
   return (
       auth.isAuthenticated ? (
         <Menu.Item>
-            <Item id='myArticles' as={Link} to='/articles/user/:id' >My Articles</Item>
-            <Item id='add' as={Link} to='/articles/add' >Create Article</Item>
-            <Item id='logout' as={Link} to='/logout' >Logout</Item>
+            <Item 
+              id='myArticles' 
+              as={Link} 
+              active={activeItem === 'myArticles'}
+              onClick={handleItemClick}
+              to='/articles/user/:id' >My Articles</Item>
+            <Item 
+              id='addArticle' 
+              as={Link} 
+              active={activeItem === 'addArticle'}
+              onClick={handleItemClick}
+              to='/articles/add' >Create Article</Item>
+            <Item 
+              id='logout' 
+              as={Link} 
+              onClick={handleLogout} 
+              to='/' >Logout</Item>
         </Menu.Item>
       ) : (
           !auth.loading ? (
@@ -27,8 +47,10 @@ const AuthMenu: FC = () => {
             <Item 
               id='login'
               as={Link}
+              active={activeItem === 'login'}
+              onClick={handleItemClick}
               to='/login' >Log In</Item>
-            <Icon name='arrow right' spaced/>
+            <Icon name='arrow right'/>
           </Menu.Item>
           ) : null
       )

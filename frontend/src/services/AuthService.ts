@@ -1,5 +1,5 @@
-import http, { setAxiosAuthToken } from ".";
-import {  User, UserCredentials } from "../interface";
+import http from ".";
+import {  RegisterUser, User, UserCredentials } from "../interface";
 
 class AuthService {
   
@@ -7,8 +7,12 @@ class AuthService {
       return http.post<User>("/auth/login", data);
     }
 
-    register(data: User) {
-      return http.post<User>("/auth/register", data);
+    logout() {
+      return http.post("/auth/login");
+    }
+
+    register(data: RegisterUser) {
+      return http.post<RegisterUser>("/auth/register", data);
     }
   }
 

@@ -3,8 +3,7 @@ export interface Article  {
     title: string;
     content: string,
     img: string;
-    user: User;
-    commentsCount: number;
+    user: CurrentUser;
     comments?: Comment[];
     related?: Article[];
     created: Date;
@@ -16,6 +15,7 @@ export interface User {
     email: string;
     name: string;
     surname: string;
+    password: string;
     articles?: Article[];
     created: Date;
 }
@@ -35,3 +35,16 @@ export interface UserCredentials {
     password: string;
   };
 
+export interface RegisterUser {
+    email: string;
+    name: string;
+    surname: string;
+    password: string;
+  }
+
+export interface CurrentUser {
+    id: number;
+    name: string;
+    surname: string;
+    token?: string;
+  }

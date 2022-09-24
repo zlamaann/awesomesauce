@@ -7,6 +7,7 @@ const mockUser: User = {
   email: 'example@web.com',
   name: 'Elisabeth',
   surname: 'Strain',
+  password: 'heslo',
   created: new Date(),
 }
 
@@ -16,7 +17,7 @@ const mockArticle: Article = {
   content: "A cat's whiskers — or vibrissae — are a well-honed sensory tool that helps a cat see in the dark and steer clear of hungry predators. Whiskers are highly sensitive tactile hairs that grow in patterns on a cat's muzzle, above its eyes and elsewhere on its body, like the ears, jaw and forelegs",
   img: '',
   user: mockUser,
-  commentsCount: 4,
+  comments: [],
   created: new Date(),
   changed: new Date()
 }
@@ -97,6 +98,7 @@ const articleSlice = createSlice({
         });
         builder.addCase(createArticle.rejected, (state, action) => {
             state.error = action.error.message || ""
+            state.loading = false;
         });
         // Retrieve all articles
         builder.addCase(retrieveAllArticles.pending, (state) => {
@@ -108,6 +110,7 @@ const articleSlice = createSlice({
         });
         builder.addCase(retrieveAllArticles.rejected, (state, action) => {
             state.error = action.error.message || ""
+            state.loading = false;
         });
         // Retrieve article
         builder.addCase(retrieveArticle.pending, (state) => {
@@ -119,6 +122,7 @@ const articleSlice = createSlice({
         });
         builder.addCase(retrieveArticle.rejected, (state, action) => {
             state.error = action.error.message || ""
+            state.loading = false;
         });
         // Retrieve article bu user
         builder.addCase(retrieveArticleByUser.pending, (state) => {
@@ -130,6 +134,7 @@ const articleSlice = createSlice({
         });
         builder.addCase(retrieveArticleByUser.rejected, (state, action) => {
             state.error = action.error.message || ""
+            state.loading = false;
         });
         // Update article
         builder.addCase(updateArticle.pending, (state) => {
@@ -141,6 +146,7 @@ const articleSlice = createSlice({
         });
         builder.addCase(updateArticle.rejected, (state, action) => {
             state.error = action.error.message || ""
+            state.loading = false;
         });
         // Delete article
         builder.addCase(deleteArticle.pending, (state) => {
@@ -153,6 +159,7 @@ const articleSlice = createSlice({
         });
         builder.addCase(deleteArticle.rejected, (state, action) => {
             state.error = action.error.message || ""
+            state.loading = false;
         });
     }
 })

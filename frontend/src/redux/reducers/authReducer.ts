@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import AuthService from '../../services/AuthService';
-import { User, UserCredentials } from '../../interface';
+import { CurrentUser, RegisterUser, User, UserCredentials } from '../../interface';
 
 
 interface UserState {
     loading: boolean;
     isAuthenticated: boolean;
     error: string;
-    user: User | null;
+    user: any;
 }
 
 const initialState: UserState = {
@@ -19,7 +19,7 @@ const initialState: UserState = {
 
 export const register = createAsyncThunk(
     "auth/register",
-    async (user: User) => {
+    async (user: RegisterUser) => {
       const res = await AuthService.register(user);
       return res.data;
     }
@@ -33,19 +33,20 @@ export const login = createAsyncThunk(
     }
   );
 
+  export const logout = createAsyncThunk(
+    "auth/logout",
+    async () => {
+      const res = await AuthService.logout();
+      return res.data;
+    }
+  );
+
 const articleSlice = createSlice({
-    name: 'articles',
+    name: 'auth',
     initialState: initialState,
-    reducers: {
-        logout: (state) => {
-            state.loading = false;
-            state.isAuthenticated = false;
-            state.user = null;
-            state.error = '';
-        }
-    },
+    reducers: {},
     extraReducers: (builder) => {
-        // User authentification
+        // User login
         builder.addCase(login.pending, (state) => {
             state.loading = true;
         });
@@ -55,6 +56,22 @@ const articleSlice = createSlice({
             state.user = payload;
         });
         builder.addCase(login.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message || ""
+            state.isAuthenticated = false;
+        });
+        // User logout
+        builder.addCase(logout.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(logout.fulfilled, (state) => {
+            state.loading = false;
+            state.isAuthenticated = false;
+            state.user = null;
+            state.error = '';
+        });
+        builder.addCase(logout.rejected, (state, action) => {
+            state.loading = false;
             state.error = action.error.message || ""
         });
         // User registration
@@ -67,11 +84,12 @@ const articleSlice = createSlice({
             state.user = payload;
         });
         builder.addCase(register.rejected, (state, action) => {
+            state.loading = false;
             state.error = action.error.message || ""
+            state.isAuthenticated = false;
         });
     }
 })
 
-export const { logout } = articleSlice.actions;
 
 export default articleSlice.reducer;

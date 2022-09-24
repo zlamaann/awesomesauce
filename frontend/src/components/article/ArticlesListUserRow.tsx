@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Item } from "semantic-ui-react";
 import { Article } from "../../interface";
 
-const ArticlesListRow: FC<{ article: Article}> = ({ article }) => {
+const ArticlesListUserRow: FC<{ article: Article}> = ({ article }) => {
 
     return (
           <Item>
@@ -24,4 +24,4 @@ const ArticlesListRow: FC<{ article: Article}> = ({ article }) => {
     );
 };
 
-export default ArticlesListRow;
+export default ArticlesListUserRow;
