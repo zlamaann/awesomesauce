@@ -1,4 +1,4 @@
-import { User } from "src/interface";
+import { User } from "../interface";
 
 
 

@@ -1,11 +1,12 @@
-import { HttpException, HttpStatus } from "@nestjs/common";
-import { UserService } from "src/user/user.service";
-import bcrypt from 'bcrypt';
-import { CreateUserDto } from "src/user/user.dto";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import * as bcrypt from 'bcrypt';
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { Token } from "./auth.interface";
+import { CreateUserDto } from "../user/user.dto";
+import { UserService } from "../user/user.service";
 
+@Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
@@ -16,7 +17,7 @@ export class AuthService {
   public async register(data: CreateUserDto) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
     try {
-      const user = await this.userService.create({
+      let user = await this.userService.create({
         ...data,
         password: hashedPassword
       });
@@ -43,10 +44,7 @@ export class AuthService {
     }
       
   private async verifyPassword(plainPassword: string, hashedPassword: string) {
-      const isPasswordMatching = await bcrypt.compare(
-          plainPassword,
-          hashedPassword
-      );
+      const isPasswordMatching = await bcrypt.compare( plainPassword, hashedPassword );
       if (!isPasswordMatching) {
           throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
       }

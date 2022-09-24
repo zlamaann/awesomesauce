@@ -1,8 +1,8 @@
-import User from "src/user/user.entity";
-import Comment from "src/comment/comment.entity";
 import { Column, CreateDateColumn, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, RelationId, UpdateDateColumn } from "typeorm";
+import Comment from "../comment/comment.entity";
+import User from "../user/user.entity";
 
-@Entity()
+@Entity({ name: 'Article' })
 class Article {
     @PrimaryGeneratedColumn()
     public id: number;

@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { Article } from "src/interface";
+import { Article } from "../interface";
 
 
 import { CreateArticleDto, UpdateArticleDto } from "./article.tdo";

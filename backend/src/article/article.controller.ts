@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Put, Post, UseGuards } from "@nestjs/common";
-import JwtAuthGuard from "src/auth/jwt.guard";
+import JwtAuthGuard from "../auth/jwt.guard";
 import ArticleService from "./article.service";
 import { CreateArticleDto, UpdateArticleDto } from "./article.tdo";
 
@@ -20,6 +20,7 @@ export default class ArticleController {
   }
 
   @Get('user/:id')
+  @UseGuards(JwtAuthGuard)
   getArticlesByUserId(@Param('id') id: string) {
     return this.articleService.getArticlesByUserId(Number(id));
   }

@@ -1,9 +1,9 @@
-import Article from "src/article/article.entity";
-import Comment from "src/comment/comment.entity";
-import User from "src/user/user.entity";
-import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn, RelationId } from "typeorm";
 
-@Entity()
+import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn, RelationId } from "typeorm";
+import Comment from "../comment/comment.entity";
+import User from "../user/user.entity";
+
+@Entity({ name: 'Vote' })
 class Vote {
     @PrimaryGeneratedColumn()
     public id: number;

@@ -1,4 +1,4 @@
-import User from "src/user/user.entity";
+import User from "../user/user.entity";
 import { Request } from 'express';
 
 export interface RequestUser extends Request {

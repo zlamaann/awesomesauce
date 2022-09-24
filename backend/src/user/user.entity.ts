@@ -1,12 +1,12 @@
-import Article from "src/article/article.entity";
-import Comment from "src/comment/comment.entity";
-import Vote from "src/vote/vote.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import Article from "../article/article.entity";
+import { Exclude } from 'class-transformer';
+
+@Entity({ name: 'User' })
 class User {
     @PrimaryGeneratedColumn()
-    public id?: number;
+    public id: number;
     
     @Column({ unique: true })
     public email: string;
@@ -18,6 +18,7 @@ class User {
     public surname: string;
 
     @Column()
+    @Exclude()
     public password: string;
     
     @OneToMany(() => Article, (article: Article) => article.user)

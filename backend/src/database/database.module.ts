@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import Article from "src/article/article.entity";
-import User from "src/user/user.entity";
-import Comment from "src/comment/comment.entity";
-import Vote from "src/vote/vote.entity";
+import Article from "../article/article.entity";
+import User from "../user/user.entity";
+import Comment from "../comment/comment.entity";
+import Vote from "../vote/vote.entity";
 
 @Module({
     imports: [
@@ -20,6 +20,11 @@ import Vote from "src/vote/vote.entity";
           database: configService.get('POSTGRES_DB'),
           entities: [Article, User, Comment, Vote],
           synchronize: true,
+          autoLoadEntities: true,
+          migrations: ['./migration/*.ts'],
+          cli: {
+            migrationsDir: './migration',
+          }
         })
       }),
     ],

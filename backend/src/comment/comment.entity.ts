@@ -1,7 +1,9 @@
-import Article from "src/article/article.entity";
-import User from "src/user/user.entity";
-import Vote from "src/vote/vote.entity";
+
 import { Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, RelationId, Tree, TreeChildren, TreeParent } from "typeorm";
+import Vote from "../vote/vote.entity";
+import Article from "../article/article.entity";
+import User from "../user/user.entity";
+
 
 @Entity()
 @Tree("materialized-path")
