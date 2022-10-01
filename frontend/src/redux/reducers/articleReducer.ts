@@ -2,25 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import ArticleService from '../../services/ArticleService';
 import { Article, User } from '../../interface';
 
-const mockUser: User = {
-  id: 1,
-  email: 'example@web.com',
-  name: 'Elisabeth',
-  surname: 'Strain',
-  password: 'heslo',
-  created: new Date(),
-}
-
-const mockArticle: Article = {
-  id: 1,
-  title: 'Why Do Cats Have Whiskers?',
-  content: "A cat's whiskers — or vibrissae — are a well-honed sensory tool that helps a cat see in the dark and steer clear of hungry predators. Whiskers are highly sensitive tactile hairs that grow in patterns on a cat's muzzle, above its eyes and elsewhere on its body, like the ears, jaw and forelegs",
-  img: '',
-  user: mockUser,
-  comments: [],
-  created: new Date(),
-  changed: new Date()
-}
 
 interface ArticleState {
     loading: boolean;
@@ -31,7 +12,7 @@ interface ArticleState {
 const initialState: ArticleState = {
     loading: false,
     error: "",
-    data: [mockArticle]
+    data: []
 }
 
 export const createArticle = createAsyncThunk(
@@ -130,7 +111,7 @@ const articleSlice = createSlice({
         });
         builder.addCase(retrieveArticleByUser.fulfilled, (state, { payload }) => {
             state.loading = false;
-            state.data = [payload];
+            state.data = payload;
         });
         builder.addCase(retrieveArticleByUser.rejected, (state, action) => {
             state.error = action.error.message || ""

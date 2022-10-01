@@ -9,6 +9,9 @@ class Article {
     
     @Column()
     public title: string;
+
+    @Column()
+    public perex: string;
     
     @Column()
     public content: string;
@@ -34,7 +37,7 @@ class Article {
     @CreateDateColumn({ type: 'timestamp' })
     public created: Date;
     
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: 'timestamp' })
     public changed: Date;
 }
  

@@ -1,58 +1,89 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { Article } from "../interface";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import User from "../user/user.entity";
+import Article from "./article.entity";
 
 
 import { CreateArticleDto, UpdateArticleDto } from "./article.tdo";
 
 @Injectable()
 export default class ArticleService {
-  private lastArticleId = 0;
-  private articles: Article[] = [];
+
+  constructor(
+    @InjectRepository(Article)
+    private articleRepository: Repository<Article>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>
+  ) {}
  
-  getAllArticles() {
-    return this.articles;
+  async getAllArticles() {
+    const articles = await this.articleRepository.find({
+      relations: { user: true }
+    }) || [];
+    return articles;
   }
  
-  getArticleById(id: number) {
-    const article = this.articles.find(article => article.id === id);
+  async getArticleById(id: number) {
+    const article = await this.articleRepository.findOne({
+      where: { id },
+      relations: { 
+        user: true,
+        comments: true
+      }
+    });
     if (article) {
       return article;
     }
     throw new HttpException('Article not found', HttpStatus.NOT_FOUND);
   }
 
-  getArticlesByUserId(id: number) {
-    const article = this.articles.filter(article => article.user.id === id);
-    if (article) {
-      return article;
-    }
-    throw new HttpException('Article not found', HttpStatus.NOT_FOUND);
+  async getArticlesByUserId(id: number) {
+    const user = await this.userRepository.findOne({ where: { id } })
+    const articles = await this.articleRepository.find({
+      where: { user: { id: user.id } },
+      relations: { user: true }
+    }) || [];
+    return articles;
   }
  
-  updateArticle(id: number, article: UpdateArticleDto) {
-    const articleIndex = this.articles.findIndex(article => article.id === id);
-    if (articleIndex > -1) {
-      this.articles[articleIndex] = article;
-      return article;
-    }
-    throw new HttpException('Article not found', HttpStatus.NOT_FOUND);
+  async updateArticle(id: number, data: UpdateArticleDto) {
+    const article = await this.articleRepository.findOne({
+      where: { id },
+      relations: { user: true }
+    });
+    if (!article) throw new HttpException('Article not found', HttpStatus.NOT_FOUND);
+    await this.articleRepository.update({ id }, {
+      title: data.title,
+      perex: data.perex,
+      content: data.content,
+      img: data.img,
+      changed: data.changed
+    })
+    return article;
   }
  
-  createArticle(article: CreateArticleDto) {
-    const newArticle = {
-      id: ++this.lastArticleId,
-      ...article
-    }
-    this.articles.push(newArticle);
-    return newArticle;
+  async createArticle(data: CreateArticleDto) {
+    const user = await this.userRepository.findOne({ where: { id: data.user.id} })
+    const article = await this.articleRepository.create({ 
+      title: data.title,
+      perex: data.perex,
+      content: data.content,
+      img: data.img,
+      user: user,
+      created: data.created
+     });
+    await this.articleRepository.save(article);
+    return article;
   }
  
-  deleteArticle(id: number) {
-    const articleIndex = this.articles.findIndex(article => article.id === id);
-    if (articleIndex > -1) {
-      this.articles.splice(articleIndex, 1);
-    } else {
-      throw new HttpException('Article not found', HttpStatus.NOT_FOUND);
-    }
+  async deleteArticle(id: number) {
+    const article = await this.articleRepository.findOne({
+      where: { id },
+      relations: { user: true }
+    });
+    if (!article) throw new HttpException('Article not found', HttpStatus.NOT_FOUND);
+    await this.articleRepository.remove(article);
+    return article;
   }
 }

@@ -32,6 +32,10 @@ code {
     h1 {
       margin-right: 32px;
     }
+
+    textarea {
+      background: none!important;
+    }
   }
 
   &.articles {
@@ -40,6 +44,20 @@ code {
   
       .item {
         margin-top: 32px;
+      }
+    }
+  }
+
+  &.article-detail {
+    img {
+      margin: 24px 0;
+    }
+
+    .wmde-markdown {
+      padding-bottom: 40px;
+
+      h1 {
+        border-bottom: none!important;
       }
     }
   }

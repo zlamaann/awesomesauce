@@ -1,26 +1,33 @@
 import { FC } from "react";
-import { Item } from "semantic-ui-react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { Checkbox, Icon, Item, List, Table } from "semantic-ui-react";
+import { useAppDispatch } from "../../hooks/hooks";
 import { Article } from "../../interface";
+import { deleteArticle } from "../../redux";
 
 const ArticlesListUserRow: FC<{ article: Article}> = ({ article }) => {
 
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const onUpdate = () => {
+    navigate(`/articles/add/${article.id}`)
+  }
+
+  const onDelete = () => {
+    dispatch(deleteArticle(article.id)).then(() => toast.success('Artikl smazán.'));
+  }
+
     return (
-          <Item>
-            <Item.Image size='small' src={article.img}/>
-            <Item.Content>
-              <Item.Header as='a'>{article.title}</Item.Header>
-              <Item.Meta>
-                <span>{`${article.user.name} ${article.user.surname}  •  ${article.created.getDay()}/${article.created.getMonth()}/${article.created.getFullYear()}`}</span>
-              </Item.Meta>
-              <Item.Description>
-                  {article.content}
-              </Item.Description>
-              <Item.Extra>
-                  <Item as='a'>Read whole article</Item>
-                  <span>{` ${article.comments?.length} comments` }</span>
-              </Item.Extra>
-            </Item.Content>
-          </Item>
+      <Table.Row>
+        <Table.Cell><Checkbox /></Table.Cell>
+        <Table.Cell>{article.title}</Table.Cell>
+        <Table.Cell>{article.perex}</Table.Cell>
+        <Table.Cell>{`${article.user.name} ${article.user.surname}`}</Table.Cell>
+        <Table.Cell>{article.comments ? article.comments.length : 0}</Table.Cell>
+        <Table.Cell><Icon link name="pencil" size="large" onClick={onUpdate} /><Icon link name="trash" size="large"  onClick={onDelete} /></Table.Cell>
+      </Table.Row>
     );
 };
 
