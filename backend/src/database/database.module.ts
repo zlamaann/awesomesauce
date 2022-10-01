@@ -20,11 +20,7 @@ import Vote from "../vote/vote.entity";
           database: configService.get('POSTGRES_DB'),
           entities: [Article, User, Comment, Vote],
           synchronize: true,
-          autoLoadEntities: true,
-          migrations: ['./migration/*.ts'],
-          cli: {
-            migrationsDir: './migration',
-          }
+          autoLoadEntities: true
         })
       }),
     ],

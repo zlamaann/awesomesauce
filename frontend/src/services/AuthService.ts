@@ -14,6 +14,10 @@ class AuthService {
     register(data: RegisterUser) {
       return http.post<RegisterUser>("/auth/register", data);
     }
+
+    authenticate() {
+      return http.get("/auth");
+    }
   }
 
 export default new AuthService;

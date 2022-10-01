@@ -11,7 +11,7 @@ class ArticleService {
     }
 
     getByUser(id: number) {
-      return http.get<Article>(`/articles/user/${id}`);
+      return http.get<Article[]>(`/articles/user/${id}`);
     }
   
     create(data: Article) {

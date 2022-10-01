@@ -15,14 +15,14 @@ class Comment {
     public content: string;
     
     @Index('comment_userId_index')
-    @ManyToOne(() => User, {cascade: true})
+    @ManyToOne(() => User, {cascade: true, eager: true})
     public user: User;
 
     @RelationId((comment: Comment) => comment.user )
     public userId: number;
 
     @Index('comment_articleId_index')
-    @ManyToOne(() => Article, (article: Article) => article.comments, {cascade: true})
+    @ManyToOne(() => Article, (article: Article) => article.comments, {cascade: true, eager: true})
     public article: Article;
 
     @RelationId((comment: Comment) => comment.article )
@@ -38,7 +38,7 @@ class Comment {
     public replies: Comment[];
 
     /*@ManyToOne(() => Comment, (comment: Comment) => comment.replies)*/
-    @TreeParent()
+    @TreeParent({ onDelete: 'CASCADE' })
     public parentComment: Comment;
 
     /*@RelationId((comment: Comment) => comment.parentComment)

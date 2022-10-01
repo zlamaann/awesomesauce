@@ -1,6 +1,7 @@
 export interface Article  {
     id: number;
     title: string;
+    perex: string;
     content: string,
     img: string;
     user: CurrentUser;
@@ -24,10 +25,20 @@ export interface Comment {
     id: number;
     content: string;
     user: User;
-    votes: number;
+    votes: Vote[];
     replies: Comment[];
+    commentParent?: Comment;
     created: Date;
-    article?: Article
+    article: Article
+}
+
+export interface Vote {
+  id: number;
+  user: User;
+  comment: Comment;
+  type: string;
+  ip: string;
+  created: Date;
 }
 
 export interface UserCredentials {

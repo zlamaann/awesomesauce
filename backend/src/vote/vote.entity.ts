@@ -1,9 +1,10 @@
 
-import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn, RelationId } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, ManyToOne, PrimaryGeneratedColumn, RelationId, Unique } from "typeorm";
 import Comment from "../comment/comment.entity";
 import User from "../user/user.entity";
 
 @Entity({ name: 'Vote' })
+@Unique("vote_userId_commentId_ip_index", ["user.id", "comment.id", "ip"])
 class Vote {
     @PrimaryGeneratedColumn()
     public id: number;
@@ -27,6 +28,9 @@ class Vote {
     
     @Column()
     public type: string;
+
+    @CreateDateColumn()
+    public created: Date;
     
 }
  
