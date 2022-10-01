@@ -8,3 +8,4 @@ export interface RequestUser extends Request {
 export interface Token {
   userId: number;
 }
+

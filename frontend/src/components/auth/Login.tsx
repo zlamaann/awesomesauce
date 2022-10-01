@@ -26,16 +26,10 @@ const Login: FC = () => {
         }))
     }
 
-    useEffect(() => {
-        if (user) {
-            navigate(`/articles/user/${user.id}`)
-        }
-    }, [])
-
 
     const handleSubmitLogin  = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(login(credentials));
+        dispatch(login(credentials)).then(() => navigate(`/articles/user/${user.id}`)); 
      }
 
     return (

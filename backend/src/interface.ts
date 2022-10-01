@@ -1,10 +1,10 @@
 export interface Article  {
     id: number;
     title: string;
+    perex: string;
     content: string,
     img: string;
-    user: User;
-    commentsCount: number;
+    user: CurrentUser;
     comments?: Comment[];
     related?: Article[];
     created: Date;
@@ -22,13 +22,23 @@ export interface User {
 }
 
 export interface Comment {
-    id: number;
-    content: string;
-    user: User;
-    votes: number;
-    replies: Comment[];
-    created: Date;
-    article?: Article
+  id: number;
+  content: string;
+  user: User;
+  votes: Vote[];
+  replies: Comment[];
+  commentParent?: Comment;
+  created: Date;
+  article: Article
+}
+
+export interface Vote {
+id: number;
+user: User;
+comment: Comment;
+type: string;
+ip: string;
+created: Date;
 }
 
 export interface UserCredentials {
@@ -36,3 +46,11 @@ export interface UserCredentials {
     password: string;
   };
 
+
+
+export interface CurrentUser {
+    id: number;
+    name: string;
+    surname: string;
+    token?: string;
+  }

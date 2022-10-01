@@ -2,6 +2,8 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import Article from "../article/article.entity";
 import { Exclude } from 'class-transformer';
+import Vote from "../vote/vote.entity";
+import Comment from "../comment/comment.entity";
 
 @Entity({ name: 'User' })
 class User {
@@ -23,15 +25,15 @@ class User {
     
     @OneToMany(() => Article, (article: Article) => article.user)
     @JoinColumn({name: 'userId'})
-    public articles?: Article[];
+    public articles: Article[];
 
-    /*@OneToMany(() => Comment, (comment: Comment) => comment.user)
+    @OneToMany(() => Comment, (comment: Comment) => comment.user)
     @JoinColumn({name: 'userId'})
-    public comments?: Comment[];
+    public comments: Comment[];
 
     @OneToMany(() => Vote, (vote: Vote) => vote.user)
     @JoinColumn({name: 'userId'})
-    public votes?: Vote[];*/
+    public votes: Vote[];
     
     @CreateDateColumn({ type: 'timestamp' })
     public created: Date;

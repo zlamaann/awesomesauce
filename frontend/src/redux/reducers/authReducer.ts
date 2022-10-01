@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import AuthService from '../../services/AuthService';
 import { CurrentUser, RegisterUser, User, UserCredentials } from '../../interface';
 
-
 interface UserState {
     loading: boolean;
     isAuthenticated: boolean;
@@ -33,13 +32,21 @@ export const login = createAsyncThunk(
     }
   );
 
-  export const logout = createAsyncThunk(
+export const logout = createAsyncThunk(
     "auth/logout",
     async () => {
-      const res = await AuthService.logout();
-      return res.data;
+        const res = await AuthService.logout();
+        return res.data;
     }
-  );
+);
+
+export const authenticate = createAsyncThunk(
+    "auth",
+    async () => {
+        const res = await AuthService.authenticate();
+        return res.data;
+    }
+);
 
 const articleSlice = createSlice({
     name: 'auth',
@@ -84,6 +91,20 @@ const articleSlice = createSlice({
             state.user = payload;
         });
         builder.addCase(register.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message || ""
+            state.isAuthenticated = false;
+        });
+        // User authentication
+        builder.addCase(authenticate.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(authenticate.fulfilled, (state, { payload }) => {
+            state.loading = false;
+            state.isAuthenticated = true;
+            state.user = payload;
+        });
+        builder.addCase(authenticate.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message || ""
             state.isAuthenticated = false;

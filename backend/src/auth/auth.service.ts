@@ -17,7 +17,7 @@ export class AuthService {
   public async register(data: CreateUserDto) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
     try {
-      let user = await this.userService.create({
+      const user = await this.userService.create({
         ...data,
         password: hashedPassword
       });
@@ -53,7 +53,7 @@ export class AuthService {
   public getCookieLogin(userId: number) {
       const payload: Token = { userId };
       const token = this.jwtService.sign(payload);
-      return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPIRATION_TIME')}`;
+      return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPIRATION_TIME')}; SameSite=Strict`;
     }
 
     public getCookieLogout() {

@@ -1,10 +1,10 @@
 
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../hooks/hooks';
 import { Icon, Item, Menu } from 'semantic-ui-react';
-import { AppDispatch, logout } from '../../redux';
+import { AppDispatch, authenticate, logout } from '../../redux';
 
 const AuthMenu: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,6 +20,10 @@ const AuthMenu: FC = () => {
     dispatch(logout());
   };
 
+  useEffect(() => {
+    dispatch(authenticate());
+  }, [dispatch])
+
   return (
       auth.isAuthenticated ? (
         <Menu.Item>
@@ -28,7 +32,7 @@ const AuthMenu: FC = () => {
               as={Link} 
               active={activeItem === 'myArticles'}
               onClick={handleItemClick}
-              to='/articles/user/:id' >My Articles</Item>
+              to={`/articles/user/${auth.user.id}`} >My Articles</Item>
             <Item 
               id='addArticle' 
               as={Link} 
@@ -42,7 +46,6 @@ const AuthMenu: FC = () => {
               to='/' >Logout</Item>
         </Menu.Item>
       ) : (
-          !auth.loading ? (
             <Menu.Item>
             <Item 
               id='login'
@@ -52,7 +55,6 @@ const AuthMenu: FC = () => {
               to='/login' >Log In</Item>
             <Icon name='arrow right'/>
           </Menu.Item>
-          ) : null
       )
   );
 };
