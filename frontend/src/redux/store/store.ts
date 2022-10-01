@@ -5,7 +5,8 @@ import rootReducer from "../reducers";
 
 const store = configureStore({
     reducer: rootReducer,
-    devTools: true
+    devTools: process.env.NODE_ENV === 'development',
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({}).concat([])
 });
 
 export default store;

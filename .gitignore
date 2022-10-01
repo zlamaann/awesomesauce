@@ -27,8 +27,12 @@ yarn-error.log*
 # Local
 docker.env
 .env
+.env.dev
 /**/node_modules/
 /**/build/
 /**/dist/
 .vscode
 .docker-data/
+.dockerignore
+.gitignore
+.vs
