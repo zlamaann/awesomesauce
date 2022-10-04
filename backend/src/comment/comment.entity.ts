@@ -22,7 +22,7 @@ class Comment {
     public userId: number;
 
     @Index('comment_articleId_index')
-    @ManyToOne(() => Article, (article: Article) => article.comments, {cascade: true, eager: true})
+    @ManyToOne(() => Article, (article: Article) => article.comments, {cascade: true, eager: true, onDelete: 'CASCADE'})
     public article: Article;
 
     @RelationId((comment: Comment) => comment.article )

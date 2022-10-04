@@ -23,15 +23,15 @@ class User {
     @Exclude()
     public password: string;
     
-    @OneToMany(() => Article, (article: Article) => article.user)
+    @OneToMany(() => Article, (article: Article) => article.user, { onDelete: 'CASCADE' })
     @JoinColumn({name: 'userId'})
     public articles: Article[];
 
-    @OneToMany(() => Comment, (comment: Comment) => comment.user)
+    @OneToMany(() => Comment, (comment: Comment) => comment.user, { onDelete: 'CASCADE' })
     @JoinColumn({name: 'userId'})
     public comments: Comment[];
 
-    @OneToMany(() => Vote, (vote: Vote) => vote.user)
+    @OneToMany(() => Vote, (vote: Vote) => vote.user, { onDelete: 'CASCADE' })
     @JoinColumn({name: 'userId'})
     public votes: Vote[];
     

@@ -17,7 +17,7 @@ class Vote {
     public userId: number;
 
     @Index('vote_commentId_index')
-    @ManyToOne(() => Comment, (comment: Comment) => comment.votes, {cascade: true})
+    @ManyToOne(() => Comment, (comment: Comment) => comment.votes, {cascade: true, onDelete: 'CASCADE'})
     public comment: Comment;
 
     @RelationId((vote: Vote) => vote.comment )
