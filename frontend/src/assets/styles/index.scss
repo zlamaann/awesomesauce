@@ -69,8 +69,10 @@ code {
   
     .right.floated.column {
       text-align: right;
-  
-      
+    }
+
+    .message ul li {
+      text-align: left;
     }
   }
 }

@@ -49,9 +49,12 @@ export const createArticle = createAsyncThunk(
   
   export const updateArticle = createAsyncThunk<Article, Article>(
     "articles/update",
-    async ( article ) => {
+    async ( article, { rejectWithValue} ) => {
       const { id, ...fields } = article
       const res = await ArticleService.update(id, fields);
+      if (res.status !== 200) {
+        rejectWithValue(res.statusText)
+      }
       return res.data;
     }
   );
@@ -99,7 +102,8 @@ const articleSlice = createSlice({
         });
         builder.addCase(retrieveArticle.fulfilled, (state, { payload }) => {
             state.loading = false;
-            state.data = [payload];
+            const index = state.data.findIndex(article => article.id === payload.id)
+            state.data[index] = payload;
         });
         builder.addCase(retrieveArticle.rejected, (state, action) => {
             state.error = action.error.message || ""
@@ -123,7 +127,8 @@ const articleSlice = createSlice({
         });
         builder.addCase(updateArticle.fulfilled, (state, { payload }) => {
             state.loading = false;
-            state.data[payload.id] = payload;
+            const articles = state.data.filter(article => article.id != payload.id)
+            state.data = [...articles, payload];
         });
         builder.addCase(updateArticle.rejected, (state, action) => {
             state.error = action.error.message || ""
@@ -136,7 +141,7 @@ const articleSlice = createSlice({
         builder.addCase(deleteArticle.fulfilled, (state, { payload }) => {
             state.loading = false;
             let index = state.data.findIndex(({ id }) => id === payload.id);
-            state.data.splice(index);
+            state.data.splice(index, 1);
         });
         builder.addCase(deleteArticle.rejected, (state, action) => {
             state.error = action.error.message || ""

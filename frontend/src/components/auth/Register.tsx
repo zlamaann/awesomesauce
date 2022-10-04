@@ -1,18 +1,23 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Button, Form, Grid, Header, Message, Segment } from "semantic-ui-react";
-import { useAppDispatch } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { register } from "../../redux";
 import { RegisterUser, User } from "../../interface";
 import { useNavigate } from "react-router-dom";
 import { validateRegister } from "../../utils";
+import { ToastContainer, toast } from 'react-toastify';
+import { unwrapResult } from "@reduxjs/toolkit";
 
 
 const Register: FC = () => {
 
-    const [errors, setErrors] = useState(['']);
-
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+
+    const { error } = useAppSelector(state => state.auth)
+
+    const [errors, setErrors] = useState<string[]>([]);
+    const [showError, setShowError] = useState(false);
 
     const [user, setUser] = useState<RegisterUser>({
         email: '',
@@ -35,24 +40,30 @@ const Register: FC = () => {
     const handleSubmitRegister  = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const errorsValidated = validateRegister(user)
+        setErrors(errorsValidated);
         if (errorsValidated.length > 0) {
-            setErrors(errorsValidated);
+            setShowError(true);
             return;
         }
-        dispatch(register(user)).then(() => navigate(`/`));
+        dispatch(register(user)).then(unwrapResult)
+        .then(result => {
+            toast.success('User registered')
+            navigate('/')
+        })
+        .catch(error => {
+            toast.error(error)});
      }
+
+     useEffect(() => {
+        if (error) toast.error(error)
+     }, [error])
 
     return (
         <div className="main register">
             <Grid textAlign='center' verticalAlign="middle" >
                 <Grid.Column style={{ maxWidth: 500}}>
-                    <Form onSubmit={handleSubmitRegister}>
-                    <Message
-                        warning
-                        header='Could you check something!'
-                        list={errors}
-                        />
-                        <Segment>
+                    <Segment>
+                        <Form onSubmit={handleSubmitRegister} error={showError}>
                             <Header as='h1' textAlign="left">Register</Header>
                             <Form.Field required>
                                 <label>Name</label>
@@ -70,11 +81,18 @@ const Register: FC = () => {
                                 <label>Password</label>
                                 <input placeholder='Password' id="password" type="password" defaultValue={user.password} onChange={onChangeCredentials} />
                             </Form.Field>
+                            <Message error>
+                                <ul>
+                                    {errors.map((error) => (
+                                        <li key={error}>{error}</li>
+                                        ))}
+                                </ul>
+                            </Message>
                             <Grid.Column>
                                 <Button type='submit' className="blue" >Register</Button>
                             </Grid.Column>
-                        </Segment>
-                    </Form>
+                        </Form>
+                    </Segment>
                 </Grid.Column>
             </Grid>
         </div>

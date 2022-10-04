@@ -16,7 +16,11 @@ const ArticlesListUserRow: FC<{ article: Article}> = ({ article }) => {
   }
 
   const onDelete = () => {
-    dispatch(deleteArticle(article.id)).then(() => toast.success('Artikl smazán.'));
+    dispatch(deleteArticle(article.id)).unwrap()
+      .then(() => toast.success('Artikl smazán.'))
+      .catch(error => {
+        toast.error(error.message);
+      });
   }
 
     return (

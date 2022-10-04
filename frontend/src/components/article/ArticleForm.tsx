@@ -1,24 +1,32 @@
-import { Button, Dimmer, Form, Grid, Header, Input, Loader, TextArea, TextAreaProps } from "semantic-ui-react";
+import { Button, Form, Grid, Header, Message} from "semantic-ui-react";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import MDEditor, { commands } from '@uiw/react-md-editor';
 import { toast } from "react-toastify";
 import { FC, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { useNavigate, useParams } from "react-router-dom";
-import { createArticle, retrieveArticle, updateArticle } from "../../redux";
+import { createArticle, updateArticle } from "../../redux";
 import { Article } from "../../interface";
+import { validateArticle } from "../../utils";
 
 
 
 const ArticleForm: FC = () => {
 
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    const { id } = useParams();
+
     const { error, data } = useAppSelector(state => state.articles)
     const { user, loading, isAuthenticated } = useAppSelector(state => state.auth)
+
+    const initArticle = data.find(article => article.id === Number(id))
 
     const initialState: Article = {
         title: '',
         perex: '',
-        content: '# Supports markdown. Yay!',
+        content: '',
         img: '',
         id: 0,
         user: user,
@@ -26,14 +34,14 @@ const ArticleForm: FC = () => {
         changed: new Date()
     }
 
-
-    const [article, setArticle] = useState(initialState);
+    const [article, setArticle] = useState<Article>(initArticle || initialState);
     const [images, setImages] = useState([]);
+    const [errors, setErrors] = useState<string[]>([]);
+    const [showError, setShowError] = useState(false);
 
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-
-    const { id } = useParams();
+    useEffect(() => {
+        if (error) toast.error(error);
+      }, [error])
 
     const { title, perex, content, img } = article;
 
@@ -56,26 +64,40 @@ const ArticleForm: FC = () => {
     }
 
     const handleSubmitArticle  = (e: React.FormEvent<HTMLFormElement>) => {
-       e.preventDefault();
+        e.preventDefault();
+        const errorsValidated = validateArticle(article)
+        setErrors(errorsValidated);
+        if (errorsValidated.length > 0) {
+            setShowError(true);
+            return;
+        }
+        setShowError(false);
        if (!id) {
-            dispatch(createArticle(article)).then(() => toast.success('Artikl uložen.'));
+            dispatch(createArticle(article)).unwrap().then((result) => {
+                toast.success('Article created.')
+                navigate(`/articles/${result.id}`)
+            }).catch(error => toast.error(error.message));
        } else {
-            dispatch(updateArticle(article)).then(() => navigate(`/articles/${id}`));
+            dispatch(updateArticle(article)).unwrap().then((result) => {
+                toast.success('Article saved.')
+                navigate(`/articles/${result.id}`)
+            }).catch(error => toast.error(error.message));
        }
     }
 
-    useEffect(() => {
-        if (!loading) 
-            if (id) { dispatch(retrieveArticle(Number(id))).then(() => { setArticle(data[0])}); }
-      }, [ isAuthenticated, id, dispatch])
-
     return (
         <div className="main article-create">
-            <Form loading={loading} onSubmit={handleSubmitArticle}>
+            <Form loading={loading} onSubmit={handleSubmitArticle} error={showError}>
             <Grid>
                 <Grid.Row><Header as="h1">{!id ? 'Create new article' : 'Update article'}</Header><Button type='submit' className="blue"  >Publish Article</Button></Grid.Row>
             </Grid>
-                {error ? (<span>{ error }</span>) : null}
+            <Message error>
+                <ul>
+                    {errors.map((error) => (
+                        <li key={error}>{error}</li>
+                        ))}
+                </ul>
+            </Message>
             <Form.Field required>
                 <label>Article Title</label>
                 <input placeholder='My First Article' id="title" defaultValue={title} onChange={onChangeArticle} />
@@ -91,7 +113,7 @@ const ArticleForm: FC = () => {
                    onChange={onChangeImage} >
                     {({ onImageUpload, onImageUpdate, onImageRemove }) => (
                         <div>
-                            {!img ? (<Button onClick={onImageUpload} compact>Upload an image</Button>) : null}
+                        {!img ? (<Button onClick={onImageUpload} type='button' compact>Upload an image</Button>) : null}
                             <div>
                                 <img src={img} alt="" width="100" />
                                 <div>

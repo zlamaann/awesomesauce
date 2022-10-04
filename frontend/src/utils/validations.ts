@@ -1,5 +1,5 @@
 
-import { RegisterUser } from "../interface";
+import { Article, RegisterUser } from "../interface";
 
 export function validateRegister(user: RegisterUser) {
     const errors = [];
@@ -25,6 +25,27 @@ export function validateRegister(user: RegisterUser) {
     if (password.length < 5) {
       errors.push("Password should be at least 5 characters long");
     }
+  
+    return errors;
+  }
+
+  export function validateArticle(article: Article) {
+    const errors = [];
+
+    const { title, perex, content, img } = article;
+  
+    if (title.length === 0) {
+      errors.push("Title can't be empty");
+    }
+    if (perex.length === 0) {
+        errors.push("Perex can't be empty");
+      }
+    if (content.length === 0) {
+        errors.push("Content can't be empty");
+      }
+    if (img.length === 0) {
+        errors.push("Image can't be empty");
+      }
   
     return errors;
   }

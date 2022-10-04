@@ -17,8 +17,9 @@ const initialState: VoteState = {
 
 export const createVote = createAsyncThunk(
     "votes/create",
-    async (vote: Vote) => {
+    async (vote: Vote, { rejectWithValue }) => {
       const res = await VoteService.create(vote);
+      if (res.status === 400) return rejectWithValue("User already voted")
       return res.data;
     }
   );

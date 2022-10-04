@@ -1,20 +1,21 @@
 import { FC, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { Button, Divider, Form, Grid, Header, Segment } from "semantic-ui-react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { login } from "../../redux";
 
 const Login: FC = () => {
 
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
     const [credentials, setCredentials] = useState({
         email: '',
         password: ''
       });
 
-    const { error, loading, user } = useAppSelector(state => state.auth)
-
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
+    const { error } = useAppSelector(state => state.auth)
 
     const onChangeCredentials = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 
@@ -29,8 +30,16 @@ const Login: FC = () => {
 
     const handleSubmitLogin  = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(login(credentials)).then(() => navigate(`/articles/user/${user.id}`)); 
+        dispatch(login(credentials)).unwrap()
+            .then((result) => {
+                toast.success("User successfully logged in");
+                navigate(`/articles/user/${result.id}`)
+            })
      }
+
+     useEffect(() => {
+        if (error) toast.error(error)
+     }, [error])
 
     return (
         <div className="main login">

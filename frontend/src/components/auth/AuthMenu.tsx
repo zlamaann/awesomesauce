@@ -1,14 +1,18 @@
 
 import React, { FC, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../hooks/hooks';
 import { Icon, Item, Menu } from 'semantic-ui-react';
 import { AppDispatch, authenticate, logout } from '../../redux';
+import { toast } from 'react-toastify';
 
 const AuthMenu: FC = () => {
+
   const dispatch = useDispatch<AppDispatch>();
-  const auth = useAppSelector(state => state.auth);
+  const navigate = useNavigate();
+
+  const { isAuthenticated, user, error } = useAppSelector(state => state.auth);
 
   const [activeItem, setActiveItem] = useState('');
 
@@ -17,44 +21,61 @@ const AuthMenu: FC = () => {
   }
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logout()).unwrap()
+      .then((result) => {
+        toast.success("User successfully logged out");
+        navigate(`/articles/user/${result.id}`);
+  })
   };
 
   useEffect(() => {
-    dispatch(authenticate());
-  }, [dispatch])
+    if (error) toast.error(error)
+  }, [error])
 
   return (
-      auth.isAuthenticated ? (
-        <Menu.Item>
-            <Item 
-              id='myArticles' 
-              as={Link} 
-              active={activeItem === 'myArticles'}
-              onClick={handleItemClick}
-              to={`/articles/user/${auth.user.id}`} >My Articles</Item>
-            <Item 
-              id='addArticle' 
-              as={Link} 
-              active={activeItem === 'addArticle'}
-              onClick={handleItemClick}
-              to='/articles/add' >Create Article</Item>
-            <Item 
-              id='logout' 
-              as={Link} 
-              onClick={handleLogout} 
-              to='/' >Logout</Item>
+      isAuthenticated ? (
+        <>
+        <Menu.Item
+          id='myArticles' 
+          as={Link} 
+          active={activeItem === 'myArticles'}
+          onClick={handleItemClick}
+          to={`/articles/user/${user.id}`}
+        >
+          My Articles
         </Menu.Item>
+        <Menu.Item 
+          id='addArticle' 
+          as={Link} 
+          active={activeItem === 'addArticle'}
+          onClick={handleItemClick}
+          to='/articles/add' 
+        >
+          Create Article
+        </Menu.Item>
+        <Menu.Item 
+          id='logout' 
+          as={Link} 
+          onClick={handleLogout} 
+          to='/' 
+        >
+          Logout
+        </Menu.Item>
+        </>
       ) : (
-            <Menu.Item>
-            <Item 
-              id='login'
-              as={Link}
-              active={activeItem === 'login'}
-              onClick={handleItemClick}
-              to='/login' >Log In</Item>
-            <Icon name='arrow right'/>
+        <>
+          <Menu.Item 
+            id='login'
+            as={Link}
+            active={activeItem === 'login'}
+            onClick={handleItemClick}
+            to='/login' 
+          >
+            Log In
+          <Icon name='arrow right'/>
           </Menu.Item>
+          
+        </>
       )
   );
 };
