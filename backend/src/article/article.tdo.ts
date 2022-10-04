@@ -28,9 +28,6 @@ export class CreateArticleDto {
   }
 
 export class UpdateArticleDto {
-    @ApiProperty()
-    @IsNumber()
-    id: number;
 
     @ApiProperty()
     @IsString()

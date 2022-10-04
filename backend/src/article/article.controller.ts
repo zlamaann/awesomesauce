@@ -48,7 +48,7 @@ export default class ArticleController {
   @ApiOkResponse({ description: 'Articles successfully retrieved' })
   @ApiUnauthorizedResponse({ description: 'User unauthorized' })
   @ApiInternalServerErrorResponse({ description: 'Internal error.'})
-  async updateArticle(@Param('id') id: string, @Body() article: UpdateArticleDto) {
+  async updateArticle(@Param('id') id: number, @Body() article: UpdateArticleDto) {
     return this.articleService.updateArticle(Number(id), article);
   }
  

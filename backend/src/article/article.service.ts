@@ -19,7 +19,9 @@ export default class ArticleService {
  
   async getAllArticles() {
     const articles = await this.articleRepository.find({
-      relations: { user: true }
+      relations: { 
+        user: true,
+        comments: true }
     }) || [];
     return articles;
   }
