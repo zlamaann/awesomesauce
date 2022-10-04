@@ -2,11 +2,15 @@ import http from "./";
 import { Comment } from "../interface";
 
 class CommentService {
-  getAllArticleComments() {
+  getAllArticleComments(id: number) {
+      return http.get<Comment[]>(`/comments/article/${id}`);
+    }
+
+  getAllComments() {
       return http.get<Comment[]>("/comments");
     }
   
-    create(data: Comment) {
+  create(data: Comment) {
       return http.post<Comment>("/comments", data);
     }
   }

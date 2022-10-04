@@ -10,8 +10,13 @@ export default class CommentController {
   constructor(
     private readonly commentService: CommentService
   ) {}
+
+  @Get()
+  getAllComments() {
+    return this.commentService.getAllComments();
+  }
  
-  @Get('user/:id')
+  @Get('article/:id')
   getAllArticleComments(@Param('id') id: string) {
     return this.commentService.getAllArticleComments(Number(id));
   }

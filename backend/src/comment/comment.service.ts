@@ -17,13 +17,19 @@ export default class CommentService {
     @InjectRepository(User)
     private userRepository: Repository<User>
   ) {}
- 
-  async getAllArticleComments(id: number) {
-    const article = await this.articleRepository.findOne({ where: { id } })
+
+  async getAllComments() {
     const comments = await this.commentRepository.findTrees({
       relations: ["user", "article"]
     }) || [];
     return comments;
+  }
+ 
+  async getAllArticleComments(id: number) {
+    const comments = await this.commentRepository.findTrees({
+      relations: ["user", "article"]
+    }) || [];
+    return comments.filter(comment => comment.article.id === id);
   }
 
   async createComment(data: CreateCommentDto) {

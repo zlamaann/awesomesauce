@@ -18,7 +18,7 @@ const CommentListRow: FC<{ comment: Comment, article: Article }> = ( { comment, 
                 <CommentUI.Text>{comment.content}</CommentUI.Text>
                 <CommentActions comment={comment} article={article} />
             </CommentUI.Content>
-            {comment.replies && comment.replies.length > 0 && ( <CommentList article={article} /> )}
+            {comment.replies && comment.replies.length > 0 && ( <CommentList comments={comment.replies} article={article} /> )}
         </CommentUI>
     );
 };

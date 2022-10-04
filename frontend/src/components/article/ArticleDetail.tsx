@@ -1,8 +1,7 @@
-import { FC, useEffect, useState } from "react";
-import { Grid, GridRow, Item, Image, Header, Divider, Form } from "semantic-ui-react";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { FC } from "react";
+import { Grid, Item, Image, Header, Divider, Form, Loader } from "semantic-ui-react";
+import { useAppSelector } from "../../hooks/hooks";
 import { useParams } from "react-router-dom";
-import { retrieveArticle } from "../../redux";
 import CommentList from "../comment/CommentList";
 import MDEditor from "@uiw/react-md-editor";
 import CommentForm from "../comment/CommentForm";
@@ -11,15 +10,25 @@ const ArticleDetail: FC = () => {
 
   const { id } = useParams();
 
-  const dispatch = useAppDispatch();
+  const comments  = useAppSelector( state => state.comments.data.filter(comment => comment.article.id === Number(id)))
+  const { data, loading } = useAppSelector( state => state.articles);
+  const { user } = useAppSelector( state => state.auth)
 
-  useEffect(() => {
-    dispatch(retrieveArticle(Number(id)));
-  }, [dispatch])
+  const article = data.find(article => article.id === Number(id))
+ 
+  if (!article) {
+    if (loading) {
+      return (
+        <Loader/>
+      )
+    }
+    return (
+      <div className="main article-detail">
+          <h2>Article not found!</h2>
+        </div> 
+    )
+  }
 
-  const articles = useAppSelector( state => state.articles.data );
-  const { loading } = useAppSelector( state => state.auth )
-  const article = articles[0];
   const created = new Date(article.created);
 
   return (
@@ -29,7 +38,7 @@ const ArticleDetail: FC = () => {
           <Grid.Column width={11}>
             <Header as='h1'>{article.title}</Header>
               <Header.Subheader>
-                {`${article.user.name} ${article.user.surname}  •  ${created.getDay()}.${created.getMonth()}.${created.getFullYear()}`}
+                {`${article.user?.name} ${article.user?.surname}  •  ${created.getDay()}.${created.getMonth()}.${created.getFullYear()}`}
               </Header.Subheader>
             <Image size='huge' src={article.img}/>
             <MDEditor.Markdown source={article.content} />
@@ -38,7 +47,7 @@ const ArticleDetail: FC = () => {
             <Form>
               <Form.Field >
                 <CommentForm article={article} />
-                <CommentList article={article} />
+                <CommentList comments={comments} article={article} />
               </Form.Field>
             </Form>
           </Grid.Column>
