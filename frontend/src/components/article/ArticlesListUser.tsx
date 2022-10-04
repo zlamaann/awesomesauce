@@ -1,25 +1,15 @@
-import { FC, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Checkbox, Header, Item, List, Table } from "semantic-ui-react";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { retrieveArticleByUser } from "../../redux/reducers/articleReducer";
-import ArticlesListRow from "./ArticlesListRow";
+import { FC } from "react";
+import { Checkbox, Header, Table } from "semantic-ui-react";
+import { useAppSelector } from "../../hooks/hooks";
 import ArticlesListUserRow from "./ArticlesListUserRow";
 
  const ArticlesListUser: FC = () => {
 
-  const dispatch = useAppDispatch();
-
-  const { id } = useParams();
-
   const { user } = useAppSelector((state) => state.auth);
-  const articles = useAppSelector((state) => state.articles.data) || [];
 
-  useEffect(() => {
-    if (id) {
-      dispatch(retrieveArticleByUser(Number(id)));
-    }
-  }, [])
+  const { data } = useAppSelector((state) => state.articles);
+
+  const articles = data.filter(article => article.user.id === user.id)
 
     return (
       <div className="main articles">

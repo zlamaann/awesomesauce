@@ -1,10 +1,9 @@
 import { FC, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Comment as CommentUI, Divider, Icon, Item } from "semantic-ui-react";
+import { Comment as CommentUI, Icon } from "semantic-ui-react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { Article, Comment, Vote } from "../../interface";
-import { createVote, retrieveArticle } from "../../redux";
+import { createVote } from "../../redux";
 import CommentForm from "./CommentForm";
 
 const CommentActions: FC<{comment: Comment, article: Article}> = ({ comment, article }) => {

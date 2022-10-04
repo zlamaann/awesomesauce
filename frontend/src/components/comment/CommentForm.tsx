@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from "react";
-import { Form, TextArea } from "semantic-ui-react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { createComment, retrieveAllArticleComments, retrieveAllComments, retrieveArticle } from "../../redux";
+import { createComment, retrieveAllComments, retrieveArticle } from "../../redux";
 import { Article, Comment } from '../../interface';
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";

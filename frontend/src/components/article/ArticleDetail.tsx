@@ -12,7 +12,6 @@ const ArticleDetail: FC = () => {
 
   const comments  = useAppSelector( state => state.comments.data.filter(comment => comment.article.id === Number(id)))
   const { data, loading } = useAppSelector( state => state.articles);
-  const { user } = useAppSelector( state => state.auth)
 
   const article = data.find(article => article.id === Number(id))
  

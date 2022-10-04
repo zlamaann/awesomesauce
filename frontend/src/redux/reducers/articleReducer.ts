@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ArticleService from '../../services/ArticleService';
-import { Article, User } from '../../interface';
+import { Article } from '../../interface';
 
 
 interface ArticleState {

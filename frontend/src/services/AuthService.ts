@@ -8,7 +8,7 @@ class AuthService {
     }
 
     logout() {
-      return http.post("/auth/login");
+      return http.post("/auth/logout");
     }
 
     register(data: RegisterUser) {

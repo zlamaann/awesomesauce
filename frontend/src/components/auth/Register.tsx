@@ -2,10 +2,10 @@ import { FC, useEffect, useState } from "react";
 import { Button, Form, Grid, Header, Message, Segment } from "semantic-ui-react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { register } from "../../redux";
-import { RegisterUser, User } from "../../interface";
+import { RegisterUser } from "../../interface";
 import { useNavigate } from "react-router-dom";
 import { validateRegister } from "../../utils";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { unwrapResult } from "@reduxjs/toolkit";
 
 
@@ -46,7 +46,7 @@ const Register: FC = () => {
             return;
         }
         dispatch(register(user)).then(unwrapResult)
-        .then(result => {
+        .then(() => {
             toast.success('User registered')
             navigate('/')
         })

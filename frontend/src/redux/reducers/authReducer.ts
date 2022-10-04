@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import AuthService from '../../services/AuthService';
-import { CurrentUser, RegisterUser, User, UserCredentials } from '../../interface';
+import { RegisterUser, UserCredentials } from '../../interface';
 
 interface UserState {
     loading: boolean;
@@ -19,8 +19,8 @@ const initialState: UserState = {
 export const register = createAsyncThunk(
     "auth/register",
     async (user: RegisterUser) => {
-      const res = await AuthService.register(user);
-      return res.data;
+        const res = await AuthService.register(user);
+        return res.data;
     }
   );
 

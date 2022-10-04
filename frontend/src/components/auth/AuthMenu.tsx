@@ -3,8 +3,8 @@ import React, { FC, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../hooks/hooks';
-import { Icon, Item, Menu } from 'semantic-ui-react';
-import { AppDispatch, authenticate, logout } from '../../redux';
+import { Icon, Menu } from 'semantic-ui-react';
+import { AppDispatch, logout } from '../../redux';
 import { toast } from 'react-toastify';
 
 const AuthMenu: FC = () => {

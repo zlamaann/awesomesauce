@@ -23,19 +23,19 @@ const Header: FC = () => {
               onClick={handleItemClick}
               as={Link}
               to='/'
-            >
-              Recent Articles
-              </Menu.Item>
-        
-            <Menu.Item
-              id='about'
-              active={activeItem === 'about'}
-              onClick={handleItemClick}
-              as={Link}
-              to='/about'
-            >
-              About
+          >
+            Recent Articles
             </Menu.Item>
+      
+          <Menu.Item
+            id='about'
+            active={activeItem === 'about'}
+            onClick={handleItemClick}
+            as={Link}
+            to='/about'
+          >
+            About
+          </Menu.Item>
           <Menu.Menu position='right'>
             <AuthMenu></AuthMenu>
           </Menu.Menu>

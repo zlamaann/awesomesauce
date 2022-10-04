@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Checkbox, Icon, Item, List, Table } from "semantic-ui-react";
+import { Checkbox, Icon, Table } from "semantic-ui-react";
 import { useAppDispatch } from "../../hooks/hooks";
 import { Article } from "../../interface";
 import { deleteArticle } from "../../redux";
