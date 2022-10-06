@@ -22,3 +22,4 @@ Swagger documentation here: http://localhost:5500/api/v1/docs
 - frontend npm vulnerabilities
 - use react-persist so state doesn't change after refresh
 - create docker-compose.yml for production 
+- synchronize: true, autoLoadEntities: true in database.module.ts set just from development purpose
