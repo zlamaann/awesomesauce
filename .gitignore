@@ -25,9 +25,9 @@ yarn-error.log*
 
 =======
 # Local
-docker.env
+#docker.env
 .env
-.env.dev
+#.env.dev
 /**/node_modules/
 /**/build/
 /**/dist/
