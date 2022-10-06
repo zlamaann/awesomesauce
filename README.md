@@ -1,30 +1,24 @@
 # Awesomesauce
-
 Awesome app for creating (p)awsome articles!
 
-docker-compose -f docker-compose-dev.yml up
-
-localhost:3000/
-
 ## Stack:
-Nodejs
-Nestjs
-Express
-TypeORM
-Postgres
-React redux toolkit
-React router 6
-Typescript
-Jest
+NodeJS, NestJS, Express, TypeORM, PostgreSQL, React, Redux toolkit, Typescript, Jest
 
-swagger documentation here: http://localhost:5500/api/v1/docs
+## Run application
+### Docker
+Run composed application: docker-compose -f docker-compose-dev.yml up
 
+### Browser
+Open in web browser: http://localhost:3000
 
-Self-feedback:
-- git versioning - not pushing directly to master
-- nginx proxy server
-- web sockets for comments and voting
-- error handling - returning REST API messages
-- npm vulnerabilities
-- use react-persist
-- create production docker-compose.yml
+### API documentation
+Swagger documentation here: http://localhost:5500/api/v1/docs
+
+## Known issues and self-feedback:
+- git versioning - not pushing directly to master and create more branches
+- configure nginx proxy server
+- implement web sockets for comments and voting
+- error handling - returning user-friendly REST API messages
+- frontend npm vulnerabilities
+- use react-persist so state doesn't change after refresh
+- create docker-compose.yml for production 
