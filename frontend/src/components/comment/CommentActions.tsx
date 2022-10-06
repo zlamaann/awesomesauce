@@ -48,7 +48,7 @@ const CommentActions: FC<{comment: Comment, article: Article}> = ({ comment, art
             .then(() => { 
                 toast.success('Voted succesfully');
             }).catch(error =>  {
-                toast.error(error.message)
+                toast.error('User can vote only once') //TODO error not thrown with proper message
             });
    }, [vote])
 

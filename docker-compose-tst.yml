@@ -1,0 +1,39 @@
+version: '3.7'
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    env_file:
+      - ./backend/src/.env.dev
+    ports:
+        - "5500:5500"
+        - 9229:9229
+    volumes:
+      - ./backend/:/backend
+      - /backend/node_modules
+    command: npm run test
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    env_file:
+      - ./frontend/src/.env.dev
+    ports:
+        - "3000:3000"
+    volumes:
+      - ./frontend/:/frontend
+      - /frontend/node_modules
+    environment:
+       - CHOKIDAR_USEPOLLING=true
+    command: npm run test
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+    - "5432:5432"
+    env_file:
+    - docker.env
+  

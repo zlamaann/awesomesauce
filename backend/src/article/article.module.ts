@@ -8,6 +8,6 @@ import ArticleService from "./article.service";
 @Module({
     imports: [TypeOrmModule.forFeature([Article, User])],
     controllers: [ArticleController],
-    providers: [ArticleService],
+    providers: [ArticleService]
   })
   export class ArticleModule {}
